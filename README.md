@@ -1,6 +1,7 @@
 # AWFM
 Advance Web File Manager with Built in File editor and Image viewer
 
+demo-http://awfm.rf.gd/
 
 Advance Web File Manager based on jquery javascript php css html5 
 
