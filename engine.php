@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 if(isset($_REQUEST["n"])){
 		$db3=urldecode($_REQUEST["n"]);
 		$dbx=urldecode($_REQUEST["dir"]);
