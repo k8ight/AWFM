@@ -3,14 +3,14 @@
 ini_set('display_startup_errors',1);
 error_reporting(-1);*/
 session_start();
-$_SESSION['k8u']="admin";
-/*unset($_SESSION['k8u']);*/
-$k8u=$_SESSION['k8u'];
-if(!empty($_SESSION["k8u"])){
-/*if (is_dir($k8u)){echo "";}else{ mkdir("../cdn/".$k8u);};*/
+$_SESSION['auth']="admin";
+/*unset($_SESSION['auth']);*/
+$auth=$_SESSION['auth'];
+if(!empty($_SESSION["auth"])){/*auth system*/
+/*if (is_dir($auth)){echo "";}else{ mkdir("./cdn/".$auth);};*/
 	
 include("iconloader.php"); 
-$db="./storage";
+$db="./WWW";
 	chdir($db);
 include("engine.php");
 include("size.php"); 	
