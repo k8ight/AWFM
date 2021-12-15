@@ -1,3 +1,9 @@
+/*
+MORE INFO AT
+
+https://github.com/sounakkar/MakeDragable
+
+*/
 function makeDragable(dragHandle, dragTarget) {
 
   let dragObj = null; //object to be moved
