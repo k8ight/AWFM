@@ -1,23 +1,40 @@
 <?php 
+/*ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(-1);*/
+session_start();
+$_SESSION['k8u']="admin";
+/*unset($_SESSION['k8u']);*/
+$k8u=$_SESSION['k8u'];
+if(!empty($_SESSION["k8u"])){
+/*if (is_dir($k8u)){echo "";}else{ mkdir("../cdn/".$k8u);};*/
+	
 include("iconloader.php"); 
-$db="www";
+$db="./storage";
 	chdir($db);
 include("engine.php");
- 	
+include("size.php"); 	
+
+
 ?>
 <!doctype html>
 <html>
 <head>
    <meta charset="UTF-8">
    <link rel="shortcut icon" href="favicon.ico">
-   <title>Notepad++</title>
+   <title>AWFM</title>
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 
-   <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="./style.css">
+   <link rel="stylesheet" href="./ux.css">
    <link rel="stylesheet" href="mobile.css">
+   
+   <script src="./jquery.min.js"></script>
+<script src="./ux.js"></script>
+<script src="./makedrag.js"></script>
 </head>
 
 <body link="black">
@@ -34,124 +51,110 @@ $ns = implode('/', $tokens);
 			
 $directory = "";
 $_SESSION['dir']="";
+$_SESSION['curdir']=$db.'/';
 		}
 		else{
 			$directory=$db1.'/';
 			$_SESSION['dir']=$directory;
+			$_SESSION['curdir']=$db.'/'.$db1.'/';
 	}}
 	
 			$db1=urldecode($_REQUEST["o"]);
 			$tokens = explode('/', $db1);      // split string on :
 		array_pop($tokens);                   // get rid of last element
 $ns = implode('/', $tokens);
+$ccnx=$ns;
 if($db1==""){
  $bck="";
 		}else{
-  $bck= "<a href='./?o=".$ns."'><button id='b' color='white'>Back</button></a><br>"; 
+  $bck= "<a href='./?o=".$ns."'><button id='bxc' ><img src='data:image/png;base64,".$back."' hright='32' width='32'></button></a><br>"; 
   $bckx='<a href="./?o='.$ns.'"><li class="menu-option">Back</li></a>';
 		}
-?>
-
-
-<div id='container2' class='ctn'>
- <div id='tbh'>     
-            <div id='ha'>Icon</div>
-			<div id='hb'>File/Folder name<button onclick="onf()" id='addfol'><img src='data:image/png;base64,<?php echo $nFol;?>' hright='32' width='32'></button><button onclick="onx()" id='addf'><img src='data:image/png;base64,<?php echo $nfil;?>' hright='32' width='32'></button></div>
-			<div id='hc'>Type</div>
-			<div id='hf'>Actions<?php echo  $bck;?></div>
-			<div id='hd'>File Size</div>
-			<div id='he'>File date</div>
-		</div>
-		</div>
-	  
 		
-	<div id='container4'> 
+	
+?>
 <form action='post'>	
 </form>	
+
+
+
+<table class="tab">
+  <tr >
+    <th>Icons</th>
+    <th>Folder/File Name
+	        <button onclick="onup()" id='upbx'><img src='data:image/png;base64,<?php echo $cloud;?>' height='32' width='32'></button>
+			<button onclick="onf()" id='addfol'><img src='data:image/png;base64,<?php echo $nFol;?>' height='32' width='32'></button>
+			<button onclick="onx()" id='addf'><img src='data:image/png;base64,<?php echo $nfil;?>' height='32' width='32'></button> 
+			<?php echo  $bck;?></th>
+	<th>Type</th>
+	<th>Actions</th>
+	<th>Size</th>
+	<th>Date modified</th>
+  </tr>
+
+
+	  
+
 	<?php
 	chdir($db);
-$files = glob($directory . "*");
+$files = glob($directory."*");
  foreach($files as $file)
 {
  if(is_dir($file))
- {
-	  echo "<div id='tb' >
-		    <div id='ba'><center><a href='./?o=$file'><img src='data:image/png;base64,$flder' hright='32' width='32'></a></center></div>
-			<div id='bb' class='statusf'>$file</div>
-			<div id='bc'></a>File Folder</div>
-			<div id='bf' ><a href='./?o=$file'><button id='a'>Open</button></a><a href='./?del=$file'><button id='del'>Delete</button></a>$bck</div>
-			<div id='fs'>N.A</div>
-			<div id='fd'></div>
-			</div> ";/**/
+ {   
+          $time=filemtime($file);
+	$modtime= date("d/M/Y",$time);
+	$siet=prettyfoldersize($file);
+	date_default_timezone_set('Asia/Kolkata'); 
+   $folnam=array_pop(explode('/', $file));
+      $key=md5(date("h:i"));
+	  echo "<tr class='ctn'>
+		    <td><center><a href='./?o=$file'><img src='data:image/png;base64,$flder' hright='32' width='32'></a></center></td>
+			<td >$folnam</td>
+			<td></a>File Folder</td>
+			<td><a href='./?o=$file'><button><img src='data:image/png;base64,".$open."' height='32' width='32'></button></a>
+            <a href='./?del=$file' onclick='delc();'><button><img src='data:image/png;base64,".$del."' height='32' width='32'></button></a>
+			<a href='./?key=$key&cdl=$file'><button ><img src='data:image/png;base64,".$compx."' height='32' width='32' title='Compress this Folder'></button></a>
+			</td>
+			<td>$siet</td>
+			<td>$modtime</td>
+			</tr> ";/**/
 			
  }
  else{
 	 $ftyp= end(explode(".", $file));
 	 $a = getimagesize($file);
-	$image_type = $a[2];
-	if(in_array($image_type , array(IMAGETYPE_GIF , IMAGETYPE_JPEG ,IMAGETYPE_PNG , IMAGETYPE_BMP)))
-	{
-		$cfx='./?iv';		
-	}
-	else{
-		$cfx='./?e';
-	}
-	 if($ftyp=='txt'){
-		 $fig=$txt;
-	 }elseif($ftyp=='php'){
-		 $fig=$php;
-	 }elseif($ftyp=='html'){
-		 $fig=$html;
-	 }elseif($ftyp=='css'){
-		 $fig=$css;
-	 }elseif($ftyp=='sql'){
-		 $fig=$sql;
-	 }elseif($ftyp=='c'){
-		 $fig=$c;
-	 }elseif($ftyp=='cpp'){
-		 $fig=$c;
-	 }elseif($ftyp=='js'){
-		 $fig=$js;
-	 }elseif($ftyp=='xml'){
-		 $fig=$xml;
-	 }
-	 else{
-		 $fig=$other;
-	 	}
+
+	 include("f2i.h");
 		
 		$time=filemtime($file);
-	$modtime= date("F d Y",$time);
-	$size=filesize($file);
-		if ($size < 1024) {
-      $siz=$size . ' Byte';
-    } elseif ($size < 1048576) {
-      $siz=round($size / 1024, 2) . ' KB';
-    } elseif ($size < 1073741824) {
-      $siz=round($size / 1048576, 2) . ' MB';
-    } elseif ($size < 1099511627776) {
-     $siz=round($size/ 1073741824, 2) . ' GB';
-    } else {
-		$siz=round($size / 1099511627776, 2) . ' TB';
-    } 
-	 echo "<div id='tb' >
-		    <div id='ba'><center><a  href='./?e=$file'><img  src='data:image/png;base64,$fig' hright='32' width='32'></a></center></div>
-			<div id='bb'  class='status'>$file</div>
-			<div id='bc'>$ftyp</div>
-			<div id='bf' ><a href='$cfx=$file'><button onclick='ef()' id='a'>Edit/View</button></a><a href='./?del=$file'><button id='del'>Delete</button></a></div>
-			<div id='bd'>$siz</div>
-			<div id='be'>$modtime</div>
-			</div> ";
+	$modtime= date("d/M/Y",$time);
+	date_default_timezone_set('Asia/Kolkata'); 
+    $filenam=array_pop(explode('/', $file));
+      $key=md5(date("h:i"));
+		$siz=pfs(filesize($file));
+     $cms="return confirm('Are you sure you want to Delete the File,which cannot be recovered?');";
+	 echo "<tr class='status' ><p style='display:none' id='avx'>$file</p>
+		    <td><center>$fig</center></td>
+			<td >$filenam</td>
+			<td>$ftyp File</td>
+			<td>
+			$cfx
+            <a href='./?del=$file' onclick='delc();'><button><img src='data:image/png;base64,".$del."' height='32' width='32'></button></a>
+			<a href='./?key=$key&dl=$file'><button ><img src='data:image/png;base64,".$down."' height='32' width='32' title='Dowload File'></button> 
+			</td>
+			<td>$siz</div>
+			<td>$modtime</td>
+			</tr> ";
  }
 }
 
 	?>
 
-	    </tbody>
-	</table>
+</table><br />
 	<center>
-	<h4>&copy 2018-19 sounak kar;</h4></center>
-	
-</div>
+	<h4>If No files or folder theres nothing added<br>&copy;<a href="https://github.com/sounakkar">Sounak Kar;</a></h4></center>
+
 
 <div id='nf'>
     <form method='post'>
@@ -171,8 +174,9 @@ $files = glob($directory . "*");
 	</div>
 	
 
-<div id='editA'>
-<?php 
+  
+<div id="editA" class="box">
+  <?php 
 if(isset($_REQUEST["e"])){
 	chdir($db);
 		$db5=urldecode($_REQUEST["e"]);
@@ -190,7 +194,11 @@ $ldr='<embed    id="runc"  src="database/'.$db5.'" />';
 
 }
 	?>	
-<form action="" method="post" name="login">
+	<div class="boxh"><span id="editAh" class="boxht">File Editor:-&nbsp;&nbsp;<?php echo $db5;?> <button class="svb" type="submit" form="editf" name="sp" value="SAVE">SAVE</button></span>
+  <a href="./?o=<?php echo $nx;?>"><button class="closemw" onclick="clse()">X</button></div></a>
+ <div class="boxht">
+
+<form action="" method="post" name="editf" id="editf" >
 
 <textarea id="t" name="t" placeholder="Do your work here" >
 <?php 
@@ -215,37 +223,107 @@ fclose($filex);
 ?>
 </textarea>
 
-<input type="submit" name="sp"   value="SAVE" />
+<!--<input type="submit" name="sp"   value="SAVE" />-->
 </form>
 
-<a href="./?o=<?php echo $nx;?>"><button id="bx" onclick="ef()">X</button></a>
-
 </div>
 
+</div>
+<div id="vi" class="box"><div class="boxh">
+<script>
+function vf(p1){
+		document.getElementById("editA").style="display:none;";
+		document.getElementById("vi").style="display:inline-block;";
+		
+		function toDataURL(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+  xhr.send();
+}
 
-<div id='ImgA'>
-<?php 
-if(isset($_REQUEST["iv"])){
+toDataURL('./storage/'+p1, function(dataUrl) {
+	document.getElementById("vib").innerHTML="<img src='"+dataUrl+"' style='max-width:800px;width:auto;max-height:558px;height:auto;' />";
+})
+}
+</script>
+ <?php /* FOR FUTURE USE IF JS not SUPPORTED
+if(isset($_REQUEST["v"])){
 	chdir($db);
-		$db7=urldecode($_REQUEST["iv"]);
+		$db7=urldecode($_REQUEST["v"]);
 		
 		if(!$db7==""){	
-		echo "<center><img src='$db7' id='imxx'></center>";
-	$cgx='<script>document.getElementById("ImgA").style="display:inline-block;"; 
-	
-	</script>';}
 		
-	$tokenx = explode('/', $db7);      // split string on :
-		array_pop($tokenx);                   // get rid of last element
-$nx = implode('/', $tokenx);
+	$cgy='<script>document.getElementById("vi").style="display:inline-block;"; 
+	
+	</script>';
+	$imgdx = $db.'/'.$db7;
+  
+// Encode the image string data into base64
+$oui= "<img src='$imgdx' style='max-width:800px;width:auto;max-height:558px;height:auto;' />";
+  
+	}
+		
+	$tokenx1 = explode('/', $db7);      // split string on :
+		array_pop($tokenx1);                   // get rid of last element
+$nx1 = implode('/', $tokenx1);
 
-}
-?>
 
-<a href="./?o=<?php echo $nx;?>"><button id="bxx" onclick="ef()">EXIT</button></a>
+}*/
+	?>	
+<span id="vih" class="boxht">Image Viewer&nbsp;&nbsp;<?php echo $db7;?> </span>
+ <button class="closemw" onclick="clse()">X</button></div> <a href="./?o=<?php echo $nx1;?>"></a>	
+  <div class="boxht" id="vib" style="text-align:center; vertical-align:middle;">
+
 </div>
+</div>
+<div id="uplod" class="box"><div class="boxh">
+<span id="uplodh" class="boxht">Image Viewer&nbsp;&nbsp;<?php echo $db7;?> </span>
+ <button class="closemw" onclick="clse()">X</button></div> <a href="./?o=<?php echo $nx1;?>"></a>	
+  <div class="boxht" id="vib" style="text-align:center; vertical-align:middle;">
+<div id="mulitplefileuploader">Upload</div>
+ 
+<div id="status"></div>
+<script>
+ 
+$(document).ready(function()
+{
+ 
+var settings = {
+    url: "./upload.php",
+    method: "POST",
+    fileName: "upl",
+    multiple: true,
+    onSuccess:function(files,data,xhr)
+    {
+        $("#status").html("<font color='green'>Upload is successful</font>");
+        location.reload();
+    },
+    onError: function(files,status,errMsg)
+    {       
+        $("#status").html("<font color='red'>Upload is Failed</font>");
+		location.reload();
+    }
+}
+$("#mulitplefileuploader").uploadFile(settings);
+ 
+});
+</script>
 
-<?php echo $cgx;	?>
+</div>
+</div>
+<?php 
+
+echo $cgx;
+echo $cgy;
+?>
 <div id="menu">
 <ul class="menu-options">
     <li class="menu-option" onclick="onf()">New Folder</li>
@@ -256,7 +334,9 @@ $nx = implode('/', $tokenx);
 </div>
 	
 	<script>
-	
+	makeDragable('#editAh','#editA');
+	makeDragable('#vih','#vi');
+	makeDragable('#uplodh','#uplod');
 	document.getElementById("editA").innerHTML.reload;
 	function onf(){
 		document.getElementById("nf").style="display:none;";
@@ -268,6 +348,9 @@ $nx = implode('/', $tokenx);
 		document.getElementById("nf").style="display:flex;";
 		document.getElementById("menu").style="display:none;";
 	}
+	function onup(){
+		document.getElementById("uplod").style.display="inline-block";
+	}
 	function ofx(){
 		document.getElementById("cf").style="display:none;";
 		document.getElementById("nf").style="display:none;";
@@ -276,26 +359,35 @@ $nx = implode('/', $tokenx);
 	
 			function ef(){
 		document.getElementById("editA").style="display:inline-block;";
-		document.getElementById("ImgA").style="display:inline-block;";
+		document.getElementById("ImgA").style="display:none;";
 					}
+					
+	function delc(){
+		/*return confirm('Are you sure you want to delete this item?');*/
+		if (confirm('Are you sure you want to delete this item , Which cannot be recovered?')){return true;}else{event.stopPropagation(); event.preventDefault();};
+	}
 	</script>
-<script src="jquery.min.js"></script>
+<!--<script src="jquery.min.js"></script>-->
 	<script>
 	
-  $(".status").bind('contextmenu', $.proxy(function(event) {
+  $(".status").bind('contextmenu', $.proxy(function(event,ttx) {
 	  var status = $(event.target).text();
-	 
+	  
+	 function getval(a){
+	 };
 	  	  event.preventDefault();
 	var num = Math.floor((Math.random()*10)+1);
 	 var validExtensions = ['jpg','gif','png','bmp','ico','tiff','svg','webp','heif','xcf']; //array of valid extensions
         var fileName = status;
+		var cms ="return confirm('Are you sure you want to delete this item , Which cannot be recovered?');";
         var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
         if ($.inArray(fileNameExt, validExtensions) == -1){
-          var foi="e";
-            var fix="Edit";      
+          var foi="<a '+tgx+' href='./?e="+status+"'><li class='menu-option'>Edit</li></a>";                  
+            var fix="Edit";  
+              var tgx="";			
 		}
-		else {var foi="iv"; var fix="View";}
-    var img = $('<div><ul class="menu-options">    <li class="menu-option" onclick="onf()">New Folder</li>    <li class="menu-option" onclick="onx()">New File</li>     <a href="./?'+foi+'='+status+'"><li class="menu-option">'+fix+'</li></a> <a href="./?del='+status+'"><li class="menu-option">Delete</li></a> <?php echo $bckx;?>   <li class="menu-option" onclick="ofx()">Exit</li>  </ul></div>');
+		else {var foi="storage/"+status; var fix="View"; var tgx='target="_blank";'}
+    var img = $('<div><ul class="menu-options">    <li class="menu-option" onclick="onf()">New Folder</li>    <li class="menu-option" onclick="onx()">New File</li> <?php echo $bckx;?>   <li class="menu-option" onclick="ofx()">Exit</li>  </ul></div>');
     $("#menu").html(img).offset({ top: event.pageY, left: event.pageX});
     $("#menu").css('display', 'inline-block');
 	
@@ -308,24 +400,7 @@ $nx = implode('/', $tokenx);
   }, this));
   
   
-     $(".statusf").bind('contextmenu', $.proxy(function(event) {
-	  var statusf = $(event.target).text();
-	  	  event.preventDefault();
-	var num = Math.floor((Math.random()*10)+1);
-	
-    var img = $('<div><ul class="menu-options">    <li class="menu-option" onclick="onf()">New Folder</li>    <li class="menu-option" onclick="onx()">New File</li>     <a href="./?o='+statusf+'"><li class="menu-option">Open</li></a><a href="./?del='+statusf+'"> <li class="menu-option">Delete</li></a> <?php echo $bckx;?>   <li class="menu-option" onclick="ofx()">Exit</li>  </ul></div>');
-    $("#menu").html(img).offset({ top: event.pageY, left: event.pageX});
-    $("#menu").css('display', 'inline-block');
-	
-  }, this));
-  
-  $(".statusf").bind('click', $.proxy(function(event) {
-	  
-    var img = $('');
-    $("#menu").html(img).offset({ top: 0, left: 0});
-    $("#menu").css('display', 'none');
-  }, this));
-  
+ 
     $(".ctn").bind('contextmenu', $.proxy(function(event) {
 	  var statusf = $(event.target).text();
 	  	  event.preventDefault();
@@ -349,3 +424,12 @@ $nx = implode('/', $tokenx);
 	
 </body>
 </html>
+<?php } 
+else {
+	echo "LOGIN REQUIRED";
+	header("Location: ../");
+}
+
+
+
+?>

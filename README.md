@@ -1,11 +1,15 @@
 # AWFM
-Advance Web File Manager with Built in File editor and Image viewer
+Advance Web File Manager with Built in Text File editor and Image viewer
 
-demo-http://awfm.rf.gd/
+demo-https://awfm.k8ight.com/
 
 Advance Web File Manager based on jquery javascript php css html5 
 
 have edit file n delete option on contextmenu
 
-to delete a folder u must delete all file inside it.
+Deleteing folder delets all files & sub folders inside it.
 atleast 1280x768 screen required
+
+#ISSUE
+
+Pressing edit can result background parent assigned folder showing.

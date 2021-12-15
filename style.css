@@ -5,16 +5,14 @@
 
 body {
 
-    overflow:hidden;
-	
+    overflow-x:hidden;
+	overflow-y:scroll;
 	height:100%;
-	width:80%;
-	left:50px;
+	width:100%;
+	left:0px;
 	color: #333;
 	font: 16px Arial;
-	padding: 50px;
-	background-image: url(./icons/gbase.jpg);
-    background-position: center;
+	background-color:#f2f7f6;
    
 }
 
@@ -40,15 +38,76 @@ h2 {
 	text-align: center;
 	padding: 0 0 12px 0; 
 }
+#container2 ,#container4{
+display:none;	
+}
+/*DO NOT TOUCH MOVEAVLE WINDOW */
+.box{
+  position: absolute;
+  display:none;
+  background-color: #f1f1f1;
+  text-align: center;
+  height:600px;
+  width:800px;
+  top:100px;
+  left:10%;
+  border: 2px solid black;
+}
 
+.boxht {
+	font-weight:900;
+	float:left;
+	width:100%;
+	display:block;
+	height:100%;
+	text-align:left;
+	
+	z-index: -1;
+	cursor: move;
+}
+.boxh{
+  padding: 5px 5px 5px 5px;
+  height:30px;
+  width:790px;
+  background-color: #04AA6D;
+  color: #fff;
+  border-bottom: 2px solid black;
+}
+.closemw{
+	float:right;
+	font-weight:900; 
+	background-color:red;
+	color:white;
+	font-size:18px;
+	height:32px;
+	width:32px;
+	margin-top:-32px;
+}
+/*DO NOT TOUCH MOVEAVLE WINDOW */
+
+.svb{
+	float:right;
+	right:64px;
+	position:relative;
+	padding: 5px 12.5px 4px; 
+	color: #fff; 
+	background-color: #0080fe;
+	text-shadow: rgba(0,0,0,0.24) 0 1px 0; 
+	font-size: 16px; 
+	box-shadow: rgba(255,255,255,0.24) 0 2px 0 0 inset,#fff 0 1px 0 0; 
+	border: 1px solid green; 
+	border-radius: 2px;
+	margin-top: 0px;
+ cursor:pointer;
+}
 #container2 {
-	top:1%;
-	left:10%;
+	top:5px;
+	left:1%;
 	position:absolute;
 	overflow-y: hidden;
 	overflow-x:hidden;
-    height: 10%;
-	width:77.7%;
+    height: 65px;
+	width:98%;
 	box-shadow: 0 5px 10px -5px rgba(0,0,0,0.5);
 	background: white; 
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
@@ -56,13 +115,13 @@ h2 {
      opacity: 0.91;
 }
 #container4 {
-	top:11%;
-	left:10%;
+	top:70px;
+	left:1%;
 	position:absolute;
 	overflow-y: scroll;
 	overflow-x: hidden;
     height: 89%;
-	width:78%;
+	width:98%;
 	box-shadow: 0 5px 10px -5px rgba(0,0,0,0.5);
 	background: white; 
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
@@ -95,28 +154,15 @@ opacity: 0.99;
  
   opacity: 0.99;
 	}
-#editA{
-	display:none;
-	top:1%;
-	left:9%;
-	position:absolute;
-	overflow-y: hidden;
-	overflow-x: hidden;
-    height:95%;
-	width:80%;
-	box-shadow: 0 5px 10px -5px rgba(0,0,0,0.5);
-	background: white; 
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
-    filter: alpha(opacity=30);
-opacity: 0.99;}
+
 #t{
-	top:10%;
-	 left:1%;
+	top:42px;
+	 left:0%;
       resize: none;
  position:absolute;
        overflow: scroll;
-   height: 550px;
-  width:98%;
+   height: 555px;
+  width:99.5%;
  font: 20px Arial;
   color:rainbow;
   opacity: 0.99;
@@ -125,7 +171,7 @@ opacity: 0.99;}
 #cf,#nf{
 	display:none;
 	top:8%;
-	left:25%;
+	left:64px;
 	position:absolute;
 	overflow-y: hidden;
 	overflow-x:hidden;
@@ -247,7 +293,7 @@ margin-left: 1%;
 	 
  }
  
-#addf,#addfol{
+#addf,#addfol,#bxc,#upbx{
 float:right;
 	padding: 0px 0px 0px; 
 	color: #fff; 
@@ -257,84 +303,47 @@ float:right;
 	box-shadow: rgba(255,255,255,0.24) 0 2px 0 0 inset,#fff 0 1px 0 0; 
 	border: 1px solid white; 
 	margin-top: 0px;
+	margin-left: 5px;
  cursor:pointer;
 }
-#tbh{
-	width:1024px;
-	height:80px;
-	display: flex;
+.tab {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width:100%;
 }
-#ha,#hb,#hc,#hd,#he,#hf,#hs,#hfd{
-	height:50%;
-	vertical-align: middle;
-	padding: 4px 11px 4px; 
-	color: #fff; 
-	background-color: Blue;
-	text-shadow: rgba(0,0,0,0.24) 0 1px 0; 
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 20px; 
-	border: 1px solid black; 
-	border-radius: 2px;
-	margin-top: 10px;
-}
-#ha{
-	width:80px;
-	}
-#hb{
-	width:522px;
-	}
-#hc{
-	width:102px;
-	}
-#hd{
-	width:100px;
-		}
-#he{
-	width:100px;
-		}
-#hf{
-	width:200px;
-	display:none;
-	}
 
-#tb{
-	width:1024px;
-	height:50px;
-	display: flex;
+.tab td, .tab th {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
-#ba,#bb,#bc,#bd,#be,#bf{
-	
-	vertical-align: middle;
-	padding: 4px 11px 4px; 
-	color: ; 
-	text-shadow: rgba(0,0,0,0.24) 0 1px 0; 
-	font-family: "Arial Black", Gadget, sans-serif;
-	font-size: 14px; 
-	font-weight: 900;
-	border: 1px solid lightgrey; 
-	border-radius: 2px;
-	margin-top: 0px;
+
+.tab tr:nth-child(even){background-color: #f2f2f2;
 }
-#ba{
+.tab tr:nth-child(1),.tab td:nth-child(1){
+	width:32px;
+}
+.tab tr:nth-child(3),.tab td:nth-child(3){
+	width:50px;
+}
+.tab tr:nth-child(4),.tab td:nth-child(4){
+	width:118px;
+}
+.tab tr:nth-child(5),.tab td:nth-child(5){
+	width:64px;
+}
+.tab tr:nth-child(6),.tab td:nth-child(6){
 	width:80px;
-	}
-#bb{
-	width:522px;
-	}
-#bc{
-	width:102px;
-	}
-#bd{
-	width:100px;
-		}
-#be{
-	width:100px;
-		}
-#bf{
-	width:20%;
-	display:none;
-	}
-	
+}
+.tab tr:hover {background-color: #ddd;}
+
+.tab th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
 
 .center {
   text-align: center;
@@ -392,5 +401,7 @@ float:right;
 	  color:RED;
   content: '!! ERROR File Manager requires atleast 1024x768 screen !! ';
   }
-  #container2, #container4{ display:none;}
+  .tab,h4{
+	  display:none;
+  }
 }
