@@ -10,6 +10,6 @@ have edit file n delete option on contextmenu
 Deleteing folder delets all files & sub folders inside it.
 atleast 1280x768 screen required
 
-#ISSUE
+# ISSUE
 
 Pressing edit can result background parent assigned folder showing.
